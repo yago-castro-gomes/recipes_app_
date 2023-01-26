@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import profile from '../images/profileIcon.svg';
 import search from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 export function Header({ title, visible }) {
   const history = useHistory();
@@ -17,6 +18,7 @@ export function Header({ title, visible }) {
   const handProfile = () => {
     history.push('/profile');
   };
+
   return (
     <div>
       <div
@@ -55,10 +57,7 @@ export function Header({ title, visible }) {
             </div>
             {searchVisible && (
               <div>
-                <input
-                  type="text"
-                  data-testid="search-input"
-                />
+                <SearchBar />
               </div>
             )}
           </div>
