@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import '../styles/login.css';
+import logo from '../assets/receitas2.png';
 
 export default function Login() {
   const [emailLogin, setEmail] = useState('');
@@ -25,28 +27,37 @@ export default function Login() {
     history.push('/meals');
   };
   return (
-    <div>
-      <div>
+    <div className="container">
+      <div className="imgConfg">
+        <img src={ logo } className="app-logo" alt="logo" />
+      </div>
+      <div className="container-form">
+        <h3>Login</h3>
         <label htmlFor="email-input">
-          Email
           <input
             type="email"
             data-testid="email-input"
+            placeholder="E-mail"
+            className="input-position"
             onChange={ (e) => setEmail(e.target.value) }
           />
         </label>
+        <br />
         <label htmlFor="password-input">
-          Password
           <input
             type="text"
             data-testid="password-input"
+            placeholder="Password"
+            className="input-position"
             onChange={ (e) => setPassword(e.target.value) }
           />
         </label>
+        <br />
         <button
           disabled={ isDisabled }
           type="submit"
           data-testid="login-submit-btn"
+          className="btn-form"
           onClick={ handClickStorage }
         >
           Enter
