@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+  font-family: ' CustomFont' , Arial , Helvetica , sans-serif;
+  margin: 0;
+}
+
+@font-face {
+  font-family: ' CustomFont';
+  src: url('./fonts/RolexLight.woff2');
+}
+
+.container {
+  align-items: end;
+  background-image: url('../assets/background-2.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 445px;
+  display: flex;
+  font-size: 0.65em;
+  height: 100vh;
+  justify-content: center;
+  padding-bottom: 30%;
+  width: 100%;
+}
+
+.app-logo {
+  height: auto;
+  left: 9%;
+  position: absolute;
+  top: 5px;
+  width: 85%;
+}
+
+.container-form {
+  align-items: center;
+  background-color: white;
+  border-radius: 1em;
+  box-shadow: 0 0.188em 1.55em rgb(156, 156, 156);
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  justify-content: space-around;
+  position: relative;
+  width: 70%;
+}
+
+input {
+  background-color: rgb(229, 226, 226);
+  border: none;
+  border-radius: 0.25em;
+  font-size: 0.75em;
+  padding: 2em;
+  text-align: center;
+}
+
+input:focus {
+  outline-color: rgb(32, 177, 255);
+}
+
+.btn-form {
+  align-items: center;
+  background-color: tomato;
+  border-radius: 0.25em;
+  cursor: pointer;
+  display: flex;
+  height: 3em;
+  justify-content: center;
+  transition: 0.5s;
+  width: 40%;
+}
+
+.btn-form:hover { transform: scale(1.25);}
