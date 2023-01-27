@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header } from '../components/Header';
+import RecipesDrinks from '../components/RecipesDrinks';
 import Footer from '../components/Footer';
 
 export default function Drinks() {
@@ -8,6 +9,7 @@ export default function Drinks() {
       <Header
         title="Drinks"
       />
+      <RecipesDrinks />
       <Footer />
     </div>
   );
