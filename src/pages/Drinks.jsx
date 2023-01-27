@@ -1,15 +1,15 @@
 import React from 'react';
 import { Header } from '../components/Header';
-import RecipesMeals from '../components/RecipesMeals';
+import RecipesDrinks from '../components/RecipesDrinks';
 import Footer from '../components/Footer';
 
-export default function Meals() {
+export default function Drinks() {
   return (
     <div>
       <Header
-        title="Meals"
+        title="Drinks"
       />
-      <RecipesMeals />
+      <RecipesDrinks />
       <Footer />
     </div>
   );
