@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header } from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Meals() {
   return (
@@ -7,6 +8,7 @@ export default function Meals() {
       <Header
         title="Meals"
       />
+      <Footer />
     </div>
   );
 }
