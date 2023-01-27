@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import RecipesMeals from '../components/RecipesMeals';
+import Footer from '../components/Footer';
 
 export default function Meals() {
   return (
@@ -9,6 +10,7 @@ export default function Meals() {
         title="Meals"
       />
       <RecipesMeals />
+      <Footer />
     </div>
   );
 }
