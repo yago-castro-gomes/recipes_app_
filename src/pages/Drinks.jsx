@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header } from '../components/Header';
-import RecipesDrinks from '../components/RecipesDrinks';
 import Footer from '../components/Footer';
+import DrinkExibithion from '../components/DrinkExibithion';
 
 export default function Drinks() {
   return (
@@ -9,7 +9,7 @@ export default function Drinks() {
       <Header
         title="Drinks"
       />
-      <RecipesDrinks />
+      <DrinkExibithion />
       <Footer />
     </div>
   );
