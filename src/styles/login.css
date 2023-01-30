@@ -10,7 +10,7 @@
 }
 
 .container {
-  align-items: end;
+  align-items: flex-end;
   background-image: url('../assets/background-2.jpg');
   background-position: center;
   background-repeat: no-repeat;

@@ -8,7 +8,8 @@ import {
   fetchLetter,
   fetchDrinkIngredient,
   fetchDrinkName,
-  fetchDrinkLetter } from '../services/apiFood';
+  fetchDrinkLetter,
+} from '../services/apiFood';
 
 function SearchBar() {
   const [radioState, setRadioState] = useState('');
@@ -22,7 +23,6 @@ function SearchBar() {
 
   const searchApiMeals = async () => {
     if (radioState === 'Ingredient') {
-      // setData(await fetchIngredient(textInput));
       dispatch(saveRecipeMeals(await fetchIngredient(textInput)));
     }
     if (radioState === 'Name') {
