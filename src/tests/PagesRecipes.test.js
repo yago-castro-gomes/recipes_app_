@@ -4,10 +4,12 @@ import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import Recipes from '../pages/Login';
 import renderWithRouterAndRedux from './helpers/renderWith';
+import MealsExibithion from '../components/MealsExibithion';
+import DrinkExibithion from '../components/DrinkExibithion';
 
 describe('Testando componente Recipes', () => {
   it('Testando lista inciaalizada', async () => {
-    act(() => { renderWithRouterAndRedux(<Recipes />); });
+    act(() => { renderWithRouterAndRedux(<MealsExibithion />); });
     await waitFor(() => {
       for (let index = 0; index < 12; index + 1) {
         expect(screen.getByTestId(`${index}-recipe-card`).toBeInTheDocument());
@@ -17,7 +19,7 @@ describe('Testando componente Recipes', () => {
     });
   });
   it('Deve conter 5 botões da categoria de comidas', async () => {
-    renderWithRouterAndRedux(<Recipes />);
+    renderWithRouterAndRedux(<MealsExibithion />);
     const categories = ['Beef', 'Breakfast', 'Chicken', 'Dessert', 'Goat', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian'];
     await waitFor(() => {
       categories.forEach((element) => {
@@ -27,7 +29,7 @@ describe('Testando componente Recipes', () => {
     });
   });
   it('Deve conter 5 botões da categoria de bebeidas', async () => {
-    renderWithRouterAndRedux(<Recipes />);
+    renderWithRouterAndRedux(<DrinkExibithion />);
     const categories = ['Ordinary Drink', 'Cocktail', 'Shake', 'Other', 'Unknown', 'Cocoa', 'Shot', 'Coffee', 'Tea', 'Homemade Liqueur', 'Punch', 'Party Drink', 'Beer', 'Soft Drink'];
     await waitFor(() => {
       categories.forEach((element) => {
@@ -37,7 +39,7 @@ describe('Testando componente Recipes', () => {
     });
   });
   it('Testando filtro da categorias comidas', async () => {
-    renderWithRouterAndRedux(<Recipes />);
+    renderWithRouterAndRedux(<MealsExibithion />);
     const buttonBeef = screen.getByTestId(/Beef-category-filte/g);
     await waitFor(() => {
       expect(buttonBeef).toBeInTheDocument();
@@ -50,7 +52,7 @@ describe('Testando componente Recipes', () => {
     });
   });
   it('Testando filtro da categorias bebidas', async () => {
-    renderWithRouterAndRedux(<Recipes />);
+    renderWithRouterAndRedux(<DrinkExibithion />);
     const buttonCocktail = screen.getByTestId(/Cocktail-category-filte/g);
     await waitFor(() => {
       expect(buttonCocktail).toBeInTheDocument();
