@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { saveRecipeMeals } from '../redux/actions';
 
 const TWENTY = 12;
@@ -63,6 +63,17 @@ function MealsExibithion() {
     dispatch(saveRecipeMeals(initialData));
   };
 
+  const handleToggle = (e) => {
+    saveCategory.map((cat) => {
+      if (saveInputCategory === cat.strCategory) {
+        dispatch(saveRecipeMeals(initialData));
+        console.log(cat.strCategory);
+        return setsaveInputCategory('');
+      }
+      return setsaveInputCategory(e);
+    });
+  };
+
   return (
     <div>
       <div>
@@ -71,7 +82,7 @@ function MealsExibithion() {
             data-testid={ `${category.strCategory}-category-filter` }
             key={ category.strCategory }
             value={ category.strCategory }
-            onClick={ (e) => setsaveInputCategory(e.target.value) }
+            onClick={ (e) => handleToggle(e.target.value) }
             type="button"
           />
         ))}
@@ -85,16 +96,20 @@ function MealsExibithion() {
       </button>
       <div>
         { recipesMeals.map((meal, index) => (
-          <div data-testid={ `${index}-recipe-card` } key={ meal.idMeal }>
-            <img
-              src={ meal.strMealThumb }
-              alt=""
-              data-testid={ `${index}-card-img` }
-              width="40%"
-            />
-            <div data-testid={ `${index}-card-name` }>
-              { meal.strMeal }
-            </div>
+          <div key={ meal.idMeal }>
+            <Link to={ `/meals/${meal.idMeal}` }>
+              <div data-testid={ `${index}-recipe-card` }>
+                <img
+                  src={ meal.strMealThumb }
+                  alt=""
+                  data-testid={ `${index}-card-img` }
+                  width="40%"
+                />
+                <div data-testid={ `${index}-card-name` }>
+                  { meal.strMeal }
+                </div>
+              </div>
+            </Link>
           </div>
         ))}
       </div>

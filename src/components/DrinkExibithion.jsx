@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { saveRecipeDrinks } from '../redux/actions';
 
 const FIVE = 5;
@@ -61,6 +61,17 @@ function DrinkExibithion() {
     dispatch(saveRecipeDrinks(initialData));
   };
 
+  const handleToggle = (e) => {
+    saveCategory.map((cat) => {
+      if (saveInputCategory === cat.strCategory) {
+        dispatch(saveRecipeDrinks(initialData));
+        console.log(cat.strCategory);
+        return setsaveInputCategory('');
+      }
+      return setsaveInputCategory(e);
+    });
+  };
+
   return (
     <div>
       <div>
@@ -69,7 +80,7 @@ function DrinkExibithion() {
             data-testid={ `${category.strCategory}-category-filter` }
             key={ category.strCategory }
             value={ category.strCategory }
-            onClick={ (e) => setsaveInputCategory(e.target.value) }
+            onClick={ (e) => handleToggle(e.target.value) }
             type="button"
           />
         ))}
@@ -84,17 +95,22 @@ function DrinkExibithion() {
 
       <div>
         { recipesDrinks.map((drink, index) => (
-          <div data-testid={ `${index}-recipe-card` } key={ drink.idDrink }>
-            <img
-              src={ drink.strDrinkThumb }
-              alt=""
-              data-testid={ `${index}-card-img` }
-              width="40%"
-            />
-            <div data-testid={ `${index}-card-name` }>
-              { drink.strDrink }
-            </div>
+          <div key={ drink.idDrink }>
+            <Link to={ `/drinks/${drink.idDrink}` }>
+              <div data-testid={ `${index}-recipe-card` }>
+                <img
+                  src={ drink.strDrinkThumb }
+                  alt=""
+                  data-testid={ `${index}-card-img` }
+                  width="40%"
+                />
+                <div data-testid={ `${index}-card-name` }>
+                  { drink.strDrink }
+                </div>
+              </div>
+            </Link>
           </div>
+
         ))}
       </div>
     </div>

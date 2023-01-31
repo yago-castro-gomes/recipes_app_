@@ -3,6 +3,7 @@ import { SAVE_RECIPE_MEALS, SAVE_RECIPE_DRINKS } from '../actions';
 export const INITIAL_STATE = {
   recipesMeals: [],
   recipesDrinks: [],
+  recipeId: [],
 };
 
 const TWELVE = 12;
