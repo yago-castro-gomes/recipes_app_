@@ -18,7 +18,7 @@ function SearchBar() {
   const dispatch = useDispatch();
 
   const { recipesMeals, recipesDrinks } = useSelector((state) => state.recipeReduce);
-  console.log(recipesMeals, recipesDrinks);
+  // console.log(recipesMeals, recipesDrinks);
   const { pathname } = history.location;
 
   const searchApiMeals = async () => {
