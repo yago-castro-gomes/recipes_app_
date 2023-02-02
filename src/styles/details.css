@@ -1,6 +1,6 @@
 .btn-start {
   position: fixed;
-  bottom: 0px;
+  bottom: 0px; /* no unit */
 }
 
 .showBtn {
