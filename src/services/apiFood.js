@@ -1,4 +1,5 @@
 const alertMenssage = 'Sorry, we haven\'t found any recipes for these filters.';
+const SIX = 6;
 
 export const fetchIngredient = async (name) => {
   try {
@@ -73,6 +74,30 @@ export const fetchDrinkLetter = async (name) => {
       return global.alert(alertMenssage);
     }
     return data.drinks;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchDrinkRecom = async () => {
+  try {
+    const fetchApi = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    const response = await fetchApi.json();
+    const data = await response.drinks;
+    const dataSlice = data.slice(0, SIX);
+    return dataSlice;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchMealsRecom = async () => {
+  try {
+    const fetchApi = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    const response = await fetchApi.json();
+    const data = await response.meals;
+    const dataSlice = data.slice(0, SIX);
+    return dataSlice;
   } catch (error) {
     console.log(error);
   }
