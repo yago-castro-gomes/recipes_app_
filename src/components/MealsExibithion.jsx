@@ -46,14 +46,16 @@ function MealsExibithion() {
 
   useEffect(() => {
     const filterCategory = async () => {
-      try {
-        const fetchApi = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${saveInputCategory}`);
-        const response = await fetchApi.json();
-        const data = await response.meals;
-        dispatch(saveRecipeMeals(data));
+      if (saveInputCategory !== '') {
+        try {
+          const fetchApi = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${saveInputCategory}`);
+          const response = await fetchApi.json();
+          const data = await response.meals;
+          dispatch(saveRecipeMeals(data));
         // setSaveElementsFiltred(data.slice(0, TWENTY));
-      } catch (error) {
-        console.log(error);
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
     filterCategory();
