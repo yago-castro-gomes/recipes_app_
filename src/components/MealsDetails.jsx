@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { fetchDrinkRecom } from '../services/apiFood';
+import { keyInProgress } from '../services/key';
+import shareButton from '../images/shareIcon.svg';
 import '../styles/details.css';
 import favoritesImg from '../images/whiteHeartIcon.svg';
-import { keyInProgress } from '../services/key';
+import blackFavorite from '../images/blackHeartIcon.svg';
 
 const THIRTYTWO = 32;
+const copy = require('clipboard-copy');
 
 export default function MealsDetails() {
   const { id } = useParams();
@@ -16,8 +19,17 @@ export default function MealsDetails() {
   const [drinkRecom, setDrinkRecom] = useState([]);
   const [buttonName, setButtonName] = useState('Start Recipe');
   const [ingMea, setIngMea] = useState([]);
+  const [favorite, setFavorites] = useState([]);
+  const [favoriteImage, setFavoriteImage] = useState(favoritesImg);
+  const [isCopy, setIsCopy] = useState(false);
 
   console.log(drinkRecom);
+
+  const handleShare = () => {
+    copy(`http://localhost:3000/meals/${id}`);
+    setIsCopy(true);
+  };
+
   const handleClick = () => {
     console.log('Clickou');
     history.push(`/meals/${id}/in-progress`);
@@ -43,7 +55,7 @@ export default function MealsDetails() {
     if (findKey) {
       setButtonName('Continue Recipe');
     }
-  }, []);
+  }, [buttonName, id]);
 
   useEffect(() => {
     const fetchMealId = async () => {
@@ -73,6 +85,42 @@ export default function MealsDetails() {
   }, []);
 
   const dataObject = dataApi[0];
+
+  useEffect(() => {
+    if (dataApi.length !== 0) {
+      const favoriteStorage = {
+        id: dataObject.idMeal,
+        type: 'meal',
+        nationality: dataObject.strArea,
+        category: dataObject.strCategory,
+        alcoholicOrNot: '',
+        name: dataObject.strMeal,
+        image: dataObject.strMealThumb,
+      };
+      setFavorites(favoriteStorage);
+    }
+  }, [dataApi]);
+
+  const favoriteBtn = () => {
+    if (localStorage.getItem('favoriteRecipes') === null) {
+      localStorage.setItem('favoriteRecipes', '[]');
+    }
+    const local = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    local.push(favorite);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(local));
+    setFavoriteImage(blackFavorite);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('favoriteRecipes') !== null) {
+      const storedValue = localStorage.getItem('favoriteRecipes');
+      const favoriteObject = storedValue ? JSON.parse(storedValue) : storedValue;
+      const findObject = favoriteObject.find((key) => key.id === id);
+      if (findObject) {
+        setFavoriteImage(blackFavorite);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const setArrayMealsAndIng = () => {
@@ -156,22 +204,34 @@ export default function MealsDetails() {
           </button>
         </div>
         <div>
+          <div>
+            { isCopy
+              ? <p>Link copied!</p>
+              : (
+                <button
+                  type="button"
+                  data-testid="share-btn"
+                  onClick={ handleShare }
+                >
+                  <img
+                    src={ shareButton }
+                    alt="share"
+                  />
+                </button>
+              )}
+          </div>
           <button
             type="button"
-            data-testid="share-btn"
-          >
-            Share
-          </button>
-          <button
-            type="button"
-            data-testid="favorite-btn"
+            onClick={ favoriteBtn }
           >
             <img
-              src={ favoritesImg }
+              data-testid="favorite-btn"
+              src={ favoriteImage }
               alt="favorites"
             />
           </button>
         </div>
+        <div className="showBtn">a</div>
       </div>
     );
   }

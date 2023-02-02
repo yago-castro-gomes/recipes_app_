@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import '../styles/details.css';
 import { keyInProgress } from '../services/key';
+import favoritesImg from '../images/whiteHeartIcon.svg';
 import blackFavorite from '../images/blackHeartIcon.svg';
+import shareButton from '../images/shareIcon.svg';
 
 const SIX = 6;
+const copy = require('clipboard-copy');
 
 export default function DrinkDetails() {
   const { id } = useParams();
@@ -14,13 +17,9 @@ export default function DrinkDetails() {
   const [mealsRecom, setMealsRecom] = useState([]);
   const [buttonName, setButtonName] = useState('Start Recipe');
   const [ingMea, setIngMea] = useState([]);
-  // const [favorite, setFavorite] = useState(blackFavorite);
-  // const [toogle, setToogle] = useState(true);
-
-  // useEffect(() => {
-  //   setFavorite((state) => (toogle ? blackFavorite : whiteFavorite));
-  // }, [toogle]);
-
+  const [isCopy, setIsCopy] = useState(false);
+  const [favorite, setFavorites] = useState([]);
+  const [favoriteImage, setFavoriteImage] = useState(favoritesImg);
   console.log(mealsRecom);
 
   const handleClick = () => {
@@ -40,6 +39,11 @@ export default function DrinkDetails() {
     localStorage.setItem('inProgressRecipes', newKeyInProgressString);
   };
 
+  const handleShare = () => {
+    copy(`http://localhost:3000/drinks/${id}`);
+    setIsCopy(true);
+  };
+
   useEffect(() => {
     const storedValue = localStorage.getItem('inProgressRecipes');
     const keyInProgressObject = storedValue ? JSON.parse(storedValue) : keyInProgress;
@@ -48,7 +52,7 @@ export default function DrinkDetails() {
     if (findKey) {
       setButtonName('Continue Recipe');
     }
-  }, []);
+  }, [buttonName, id]);
 
   useEffect(() => {
     const fetchDrinksId = async () => {
@@ -113,6 +117,44 @@ export default function DrinkDetails() {
     setArrayMealsAndIng();
   }, [dataApi, dataObject]);
 
+  useEffect(() => {
+    if (dataApi.length !== 0) {
+      const areaObject = dataObject.strArea;
+      const checkArea = areaObject !== null ? dataObject.strArea : '';
+      const favoriteStorage = {
+        id: dataObject.idDrink,
+        type: 'drink',
+        nationality: checkArea,
+        category: dataObject.strCategory,
+        alcoholicOrNot: dataObject.strAlcoholic,
+        name: dataObject.strDrink,
+        image: dataObject.strDrinkThumb,
+      };
+      setFavorites(favoriteStorage);
+    }
+  }, [dataApi]);
+
+  const favoriteBtn = () => {
+    if (localStorage.getItem('favoriteRecipes') === null) {
+      localStorage.setItem('favoriteRecipes', '[]');
+    }
+    const local = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    local.push(favorite);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(local));
+    setFavoriteImage(blackFavorite);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('favoriteRecipes') !== null) {
+      const storedValue = localStorage.getItem('favoriteRecipes');
+      const favoriteObject = storedValue ? JSON.parse(storedValue) : storedValue;
+      const findObject = favoriteObject.find((key) => key.id === id);
+      if (findObject) {
+        setFavoriteImage(blackFavorite);
+      }
+    }
+  }, []);
+
   if (pathname === `/drinks/${id}` && dataApi.length !== 0) {
     return (
       <div>
@@ -157,18 +199,29 @@ export default function DrinkDetails() {
           </button>
         </div>
         <div>
+          <div>
+            { isCopy
+              ? <p>Link copied!</p>
+              : (
+                <button
+                  type="button"
+                  data-testid="share-btn"
+                  onClick={ handleShare }
+                >
+                  <img
+                    src={ shareButton }
+                    alt="share"
+                  />
+                </button>
+              )}
+          </div>
           <button
             type="button"
-            data-testid="share-btn"
-          >
-            Share
-          </button>
-          <button
-            type="button"
-            data-testid="favorite-btn"
+            onClick={ favoriteBtn }
           >
             <img
-              src={ blackFavorite }
+              data-testid="favorite-btn"
+              src={ favoriteImage }
               alt="favorites"
             />
           </button>
