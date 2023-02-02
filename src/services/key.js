@@ -24,6 +24,5 @@ export const keyInProgress = {
   drinks: {
   },
   meals: {
-    id: {},
   },
 };

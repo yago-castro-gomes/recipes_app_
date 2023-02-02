@@ -1,11 +1,8 @@
 .btn-start {
   position: fixed;
+  bottom: 0px;
 }
 
-.favorite-btn {
-  background-color: white;
-}
-
-.favortire-btn-heart {
-  background-color: red;
+.showBtn {
+  height: 500px;
 }
