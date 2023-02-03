@@ -41,7 +41,7 @@ export default function MealsDetails() {
     }
     keyInProgressObject.meals[keyDinamic] = { id };
     const newMeals = { ...keyInProgressObject.meals,
-      [keyDinamic]: [ingMea] };
+      [keyDinamic]: [] };
     const newKeyInProgress = { ...keyInProgressObject, meals: newMeals };
     const newKeyInProgressString = JSON.stringify(newKeyInProgress);
     localStorage.setItem('inProgressRecipes', newKeyInProgressString);
