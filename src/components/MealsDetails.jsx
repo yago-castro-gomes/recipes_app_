@@ -109,6 +109,9 @@ export default function MealsDetails() {
     local.push(favorite);
     localStorage.setItem('favoriteRecipes', JSON.stringify(local));
     setFavoriteImage(blackFavorite);
+    if (favoriteImage === blackFavorite) {
+      setFavoriteImage(favoritesImg);
+    }
   };
 
   useEffect(() => {
@@ -141,7 +144,7 @@ export default function MealsDetails() {
         }
         const ingAndMeaArray = Object.entries(ingAndMea)
           .map(([key, value]) => ({ [key]: value }));
-
+        ingAndMeaArray.pop();
         setIngMea(ingAndMeaArray);
       }
     };

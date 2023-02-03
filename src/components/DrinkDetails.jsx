@@ -117,10 +117,11 @@ export default function DrinkDetails() {
     setArrayMealsAndIng();
   }, [dataApi, dataObject]);
 
+  console.log(dataObject);
+
   useEffect(() => {
     if (dataApi.length !== 0) {
-      const areaObject = dataObject.strArea;
-      const checkArea = areaObject !== null ? dataObject.strArea : '';
+      const checkArea = dataObject.strArea in dataObject ? dataObject[strArea] : '';
       const favoriteStorage = {
         id: dataObject.idDrink,
         type: 'drink',
@@ -142,6 +143,9 @@ export default function DrinkDetails() {
     local.push(favorite);
     localStorage.setItem('favoriteRecipes', JSON.stringify(local));
     setFavoriteImage(blackFavorite);
+    if (favoriteImage === blackFavorite) {
+      setFavoriteImage(favoritesImg);
+    }
   };
 
   useEffect(() => {
