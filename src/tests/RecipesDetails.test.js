@@ -6,6 +6,8 @@ import renderWithRouterAndRedux from './helpers/renderWith';
 import App from '../App';
 
 const CORBA = '/meals/52977';
+const DRINK = '/drinks/14610';
+
 describe('Testando componente Recipe Details', () => {
   it('Testando Redirect para Recipe Details - Meals', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
@@ -68,6 +70,14 @@ describe('Testando componente Recipe Details', () => {
     act(() => {
       userEvent.click(screen.getByText(/Corba/i));
     });
+
+    waitFor(() => {
+      expect(screen.getByRole('button', {
+        name: /share/i,
+      })).toBeInTheDocument();
+      expect(screen.getByAltText(/favorites/i)).toBeInTheDocument();
+    });
+
     const listItems = ['Lentils-1 cup',
       'Onion-1 large',
       'Carrots-1 large',
@@ -86,18 +96,17 @@ describe('Testando componente Recipe Details', () => {
 
     await waitFor(() => {
       expect(history.location.pathname).toBe(CORBA);
-      expect(screen.getByRole('img', {
-        name: /https:\/\/www\.themealdb\.com\/images\/media\/meals\/58oia61564916529\.jpg/i,
-      })).toBeInTheDocument();
+      expect(screen.getByTestId(/recipe-photo/)).toBeInTheDocument();
       expect(screen.getByText(/corba/i)).toBeInTheDocument();
       expect(screen.getByText(/corba/i)).toBeInTheDocument();
       listItems.forEach((element) => {
         expect(screen.getByText(element)).toBeInTheDocument();
       });
       expect(screen.getByText(steps)).toBeInTheDocument();
-      expect(screen.getByRole('img', { src: 'https://www.youtube.com/embed/VVnZd8A84z4' })).toBeInTheDocument();
+      expect(screen.getByTestId(/video/i)).toBeInTheDocument();
     });
   });
+
   it('Testantando componentes da rota Recipe Detaisl - Drinks', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
@@ -114,11 +123,18 @@ describe('Testando componente Recipe Details', () => {
       userEvent.click(screen.getByText(/acid/i));
     });
 
+    waitFor(() => {
+      expect(screen.getByRole('button', {
+        name: /share/i,
+      })).toBeInTheDocument();
+      expect(screen.getByAltText(/favorites/i)).toBeInTheDocument();
+    });
+
     const steps = [/Poor in the 151 first followed by the 101 served with a Coke or Dr Pepper chaser./i, /Poor in the 151 first followed by the 101 served with a Coke or Dr Pepper chaser./i];
     const items = [/151 proof rum-1 oz Bacardi/i, /Wild Turkey-1 oz/i];
 
     await waitFor(() => {
-      expect(history.location.pathname).toBe('/drinks/14610');
+      expect(history.location.pathname).toBe(DRINK);
       expect(screen.getByText(/ACID/i)).toBeInTheDocument();
       expect(screen.getByText(/acid/i)).toBeInTheDocument();
       steps.forEach((element) => {
@@ -131,5 +147,86 @@ describe('Testando componente Recipe Details', () => {
         name: /https:\/\/www\.thecocktaildb\.com\/images\/media\/drink\/xuxpxt1479209317\.jpg/i,
       })).toBeInTheDocument();
     });
+  });
+
+  it('Testando a presença de componentes na rota Drinks', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+    const ROTA = '/drinks/15288';
+
+    act(() => {
+      history.push(ROTA);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', {
+        name: 'Start Recipe',
+      })).toBeInTheDocument();
+    });
+
+    act(() => {
+      userEvent.click(screen.getByRole('button', {
+        name: /Start Recipe/i,
+      }));
+    });
+
+    waitFor(() => {
+      expect(history.location.pathname).toBe('/drinks/15288/in-progress');
+    });
+
+    act(() => {
+      history.push(ROTA);
+    });
+
+    waitFor(() => {
+      expect(history.location.pathname).toBe(ROTA);
+
+      expect(screen.getByRole('button', {
+        name: 'Continue Recipe',
+      })).toBeInTheDocument();
+
+      expect(screen.getByRole('button', {
+        name: 'Start Recipe',
+      })).not.toBeInTheDocument();
+    });
+
+    userEvent.click(await screen.findByRole('button', {
+      name: /Continue Recipe/i,
+    }));
+
+    waitFor(() => {
+      expect(history.location.pathname).toBe('/drinks/15288/in-progress');
+    });
+  });
+
+  it('Testando Fetch Recipes na rota Drinks', async () => {
+    // jest.clearAllMocks();
+
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    await act(async () => {
+      history.push('/drinks/14610');
+    });
+
+    globalThis.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue([{ drink: null }]),
+    });
+
+    expect(history.location.pathname).toBe(DRINK);
+    expect(global.fetch).not.toBeCalled();
+  });
+
+  it('Testando Fetch Recipes na rota Meals', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    await act(async () => {
+      history.push(CORBA);
+    });
+
+    globalThis.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue([{ meals: null }]),
+    });
+
+    expect(history.location.pathname).toBe(CORBA);
+    expect(global.fetch).not.toBeCalled();
   });
 });
