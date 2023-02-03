@@ -1,7 +1,8 @@
 import React from 'react';
+import MealsInProgoress from './MealsInProgoress';
 
 export default function RecipesInProgress() {
   return (
-    <div>RecipesInProgress</div>
+    <div><MealsInProgoress /></div>
   );
 }
