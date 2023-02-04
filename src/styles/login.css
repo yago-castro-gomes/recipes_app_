@@ -4,11 +4,6 @@
   margin: 0;
 }
 
-/* @font-face {
-  font-family: ' CustomFont';
-  src: url('./fonts/RolexLight.woff2');
-} */
-
 .container {
   align-items: flex-end;
   background-image: url('../assets/background-2.jpg');
