@@ -3,6 +3,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import shareButton from '../images/shareIcon.svg';
 import favoritesImg from '../images/whiteHeartIcon.svg';
 import { keyInProgress } from '../services/key';
+import blackFavorite from '../images/blackHeartIcon.svg';
+import { fetchDrinksWithId } from '../services/apiFood';
 
 const copy = require('clipboard-copy');
 
@@ -14,6 +16,8 @@ export default function DrinksInProgoress() {
   const [ingMea, setIngMea] = useState([]);
   const [isCopy, setIsCopy] = useState(false);
   const [doneRecipeStorage, setDoneRecipeStorage] = useState([]);
+  const [favorite, setFavorites] = useState([]);
+  const [favoriteImage, setFavoriteImage] = useState(favoritesImg);
 
   const handleShare = () => {
     copy(`http://localhost:3000/drinks/${id}`);
@@ -22,18 +26,7 @@ export default function DrinksInProgoress() {
 
   useEffect(() => {
     const fetchDrinksId = async () => {
-      try {
-        const fetchApi = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-        const response = await fetchApi.json();
-        const data = await response;
-        setDataApi(data.drinks);
-        if (data.drinks === null) {
-          return global.alert(alertMenssage);
-        }
-        return data.drinks;
-      } catch (error) {
-        console.log(error);
-      }
+      setDataApi(await fetchDrinksWithId(id));
     };
     fetchDrinksId();
   }, [id, pathname]);
@@ -117,10 +110,11 @@ export default function DrinksInProgoress() {
       localStorage.setItem('doneRecipes', '[]');
     }
     if (dataApi.length !== 0) {
+      const checkArea = dataObject.strArea in dataObject ? dataObject[strArea] : '';
       const newRecipe = {
         id: dataObject.idDrink,
         type: 'drink',
-        nationality: dataObject.strArea,
+        nationality: checkArea,
         category: dataObject.strCategory,
         alcoholicOrNot: dataObject.strAlcoholic,
         name: dataObject.strDrink,
@@ -132,7 +126,21 @@ export default function DrinksInProgoress() {
     }
   }, [dataApi]);
 
-  console.log(doneRecipeStorage);
+  useEffect(() => {
+    if (dataApi.length !== 0) {
+      const checkArea = dataObject.strArea in dataObject ? dataObject[strArea] : '';
+      const favoriteStorage = {
+        id: dataObject.idDrink,
+        type: 'drink',
+        nationality: checkArea,
+        category: dataObject.strCategory,
+        alcoholicOrNot: dataObject.strAlcoholic,
+        name: dataObject.strDrink,
+        image: dataObject.strDrinkThumb,
+      };
+      setFavorites(favoriteStorage);
+    }
+  }, [dataApi]);
 
   const finishBtn = () => {
     const local = localStorage.getItem('doneRecipes');
@@ -144,6 +152,35 @@ export default function DrinksInProgoress() {
     }
     history.push('/done-recipes');
   };
+
+  const favoriteBtn = () => {
+    if (localStorage.getItem('favoriteRecipes') === null) {
+      localStorage.setItem('favoriteRecipes', '[]');
+    }
+    const local = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const filterStorage = local.filter((fav) => fav.id !== favorite.id);
+    const findId = local.some((fav) => fav.id === favorite.id);
+    if (findId === true) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify(filterStorage));
+      setFavoriteImage(favoritesImg);
+      console.log('entrou aqui');
+    } else {
+      local.push(favorite);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(local));
+      setFavoriteImage(blackFavorite);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('favoriteRecipes') !== null) {
+      const storedValue = localStorage.getItem('favoriteRecipes');
+      const favoriteObject = storedValue ? JSON.parse(storedValue) : storedValue;
+      const findObject = favoriteObject.find((key) => key.id === id);
+      if (findObject) {
+        setFavoriteImage(blackFavorite);
+      }
+    }
+  }, []);
 
   if (pathname === `/drinks/${id}/in-progress` && dataApi.length !== 0) {
     const checkEvery = ingMea.every((check) => check.isChecked === true);
@@ -161,26 +198,13 @@ export default function DrinksInProgoress() {
             { isCopy
               ? <p>Link copied!</p>
               : (
-                <button
-                  type="button"
-                  data-testid="share-btn"
-                  onClick={ handleShare }
-                >
-                  <img
-                    src={ shareButton }
-                    alt="share"
-                  />
+                <button type="button" data-testid="share-btn" onClick={ handleShare }>
+                  <img src={ shareButton } alt="share" />
                 </button>
               )}
           </div>
-          <button
-            type="button"
-          >
-            <img
-              data-testid="favorite-btn"
-              src={ favoritesImg }
-              alt="favorites"
-            />
+          <button type="button" onClick={ favoriteBtn }>
+            <img data-testid="favorite-btn" src={ favoriteImage } alt="favorites" />
           </button>
         </div>
         <div data-testid="recipe-category">

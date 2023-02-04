@@ -3,6 +3,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import shareButton from '../images/shareIcon.svg';
 import favoritesImg from '../images/whiteHeartIcon.svg';
 import { keyInProgress } from '../services/key';
+import blackFavorite from '../images/blackHeartIcon.svg';
+import { fetchMealWithId } from '../services/apiFood';
 
 const copy = require('clipboard-copy');
 
@@ -14,6 +16,8 @@ export default function MealsInProgoress() {
   const [ingMea, setIngMea] = useState([]);
   const [isCopy, setIsCopy] = useState(false);
   const [doneRecipeStorage, setDoneRecipeStorage] = useState([]);
+  const [favorite, setFavorites] = useState([]);
+  const [favoriteImage, setFavoriteImage] = useState(favoritesImg);
 
   const handleShare = () => {
     copy(`http://localhost:3000/meals/${id}`);
@@ -22,18 +26,7 @@ export default function MealsInProgoress() {
 
   useEffect(() => {
     const fetchMealId = async () => {
-      try {
-        const fetchApi = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-        const response = await fetchApi.json();
-        const data = await response;
-        setDataApi(data.meals);
-        if (data.meals === null) {
-          return global.alert(alertMenssage);
-        }
-        return data.meals;
-      } catch (error) {
-        console.log(error);
-      }
+      setDataApi(await fetchMealWithId(id));
     };
     fetchMealId();
   }, [id, pathname]);
@@ -134,6 +127,21 @@ export default function MealsInProgoress() {
   };
 
   useEffect(() => {
+    if (dataApi.length !== 0) {
+      const favoriteStorage = {
+        id: dataObject.idMeal,
+        type: 'meal',
+        nationality: dataObject.strArea,
+        category: dataObject.strCategory,
+        alcoholicOrNot: '',
+        name: dataObject.strMeal,
+        image: dataObject.strMealThumb,
+      };
+      setFavorites(favoriteStorage);
+    }
+  }, [dataApi]);
+
+  useEffect(() => {
     const storedValue = localStorage.getItem('inProgressRecipes');
     const keyInProgressObject = storedValue ? JSON.parse(storedValue) : keyInProgress;
     const findKey = Object.keys(keyInProgressObject.meals)
@@ -144,7 +152,34 @@ export default function MealsInProgoress() {
     }
   }, [id, dataApi]);
 
-  console.log(ingMea);
+  const favoriteBtn = () => {
+    if (localStorage.getItem('favoriteRecipes') === null) {
+      localStorage.setItem('favoriteRecipes', '[]');
+    }
+    const local = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const filterStorage = local.filter((fav) => fav.id !== favorite.id);
+    const findId = local.some((fav) => fav.id === favorite.id);
+    if (findId === true) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify(filterStorage));
+      setFavoriteImage(favoritesImg);
+      console.log('entrou aqui');
+    } else {
+      local.push(favorite);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(local));
+      setFavoriteImage(blackFavorite);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('favoriteRecipes') !== null) {
+      const storedValue = localStorage.getItem('favoriteRecipes');
+      const favoriteObject = storedValue ? JSON.parse(storedValue) : storedValue;
+      const findObject = favoriteObject.find((key) => key.id === id);
+      if (findObject) {
+        setFavoriteImage(blackFavorite);
+      }
+    }
+  }, []);
 
   if (pathname === `/meals/${id}/in-progress` && dataApi.length !== 0) {
     const checkEvery = ingMea.every((check) => check.isChecked === true);
@@ -162,26 +197,13 @@ export default function MealsInProgoress() {
             { isCopy
               ? <p>Link copied!</p>
               : (
-                <button
-                  type="button"
-                  data-testid="share-btn"
-                  onClick={ handleShare }
-                >
-                  <img
-                    src={ shareButton }
-                    alt="share"
-                  />
+                <button type="button" data-testid="share-btn" onClick={ handleShare }>
+                  <img src={ shareButton } alt="share" />
                 </button>
               )}
           </div>
-          <button
-            type="button"
-          >
-            <img
-              data-testid="favorite-btn"
-              src={ favoritesImg }
-              alt="favorites"
-            />
+          <button type="button" onClick={ favoriteBtn }>
+            <img data-testid="favorite-btn" src={ favoriteImage } alt="favorites" />
           </button>
         </div>
         <div data-testid="recipe-category">
