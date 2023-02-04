@@ -102,3 +102,25 @@ export const fetchMealsRecom = async () => {
     console.log(error);
   }
 };
+
+export const fetchDrinksWithId = async (id) => {
+  try {
+    const fetchApi = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const response = await fetchApi.json();
+    const data = await response;
+    return data.drinks;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchMealWithId = async (id) => {
+  try {
+    const fetchApi = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const response = await fetchApi.json();
+    const data = await response;
+    return data.meals;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -62,9 +62,6 @@ export default function DrinkDetails() {
           const response = await fetchApi.json();
           const data = await response;
           setDataApi(data.drinks);
-          if (data.drinks === null) {
-            return global.alert(alertMenssage);
-          }
           return data.drinks;
         } catch (error) {
           console.log(error);

@@ -65,9 +65,6 @@ export default function MealsDetails() {
           const response = await fetchApi.json();
           const data = await response;
           setDataApi(data.meals);
-          if (data.meals === null) {
-            return global.alert(alertMenssage);
-          }
           return data.meals;
         } catch (error) {
           console.log(error);
