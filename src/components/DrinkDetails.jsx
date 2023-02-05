@@ -63,8 +63,8 @@ export default function DrinkDetails() {
           const data = await response;
           setDataApi(data.drinks);
           return data.drinks;
-        } catch (error) {
-          console.log(error);
+        } catch {
+          return false;
         }
       }
     };
@@ -79,8 +79,8 @@ export default function DrinkDetails() {
         const data = await response.meals;
         const dataSlice = data.slice(0, SIX);
         setMealsRecom(dataSlice);
-      } catch (error) {
-        console.log(error);
+      } catch {
+        return false;
       }
     };
     fetchMealsRecom();

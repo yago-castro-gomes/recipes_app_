@@ -37,7 +37,7 @@ function DrinkExibithion() {
         const data = await response.drinks;
         const sliceCategory = data.slice(0, FIVE);
         setSaveCategory(sliceCategory);
-        console.log(sliceCategory);
+        // console.log(sliceCategory);
       }
     };
     checkCategoryDrinks();
