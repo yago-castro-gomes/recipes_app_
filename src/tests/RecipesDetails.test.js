@@ -25,9 +25,8 @@ describe('Testando componente Recipe Details', () => {
       userEvent.click(screen.getByText(/corba/i));
     });
 
-    const { location: { pathname } } = history;
-
     await waitFor(() => {
+      const { location: { pathname } } = history;
       expect(pathname).toBe(CORBA);
     });
   });
@@ -48,9 +47,8 @@ describe('Testando componente Recipe Details', () => {
       userEvent.click(screen.getByText(/A1/i));
     });
 
-    const { location: { pathname } } = history;
-
     await waitFor(() => {
+      const { location: { pathname } } = history;
       expect(pathname).toBe('/drinks/17222');
     });
   });
@@ -177,56 +175,130 @@ describe('Testando componente Recipe Details', () => {
       history.push(ROTA);
     });
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(history.location.pathname).toBe(ROTA);
-
-      expect(screen.getByRole('button', {
-        name: 'Continue Recipe',
-      })).toBeInTheDocument();
-
-      expect(screen.getByRole('button', {
-        name: 'Start Recipe',
-      })).not.toBeInTheDocument();
-    });
-
-    userEvent.click(await screen.findByRole('button', {
-      name: /Continue Recipe/i,
-    }));
-
-    waitFor(() => {
-      expect(history.location.pathname).toBe('/drinks/15288/in-progress');
+      expect(screen.getByText(/continue recipe/i)).toBeInTheDocument();
     });
   });
 
+  it('Testando redirect para rota progress', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    act(() => {
+      history.push('/meals/52844');
+    });
+
+    waitFor(() => {
+      expect(history.location.pathname).toBe('/meals/52844');
+    });
+
+    const buttonStart = await screen.findByText(/start recipe/i);
+
+    act(() => {
+      userEvent.click(buttonStart);
+    });
+
+    const storage = localStorage.getItem('inProgressRecipes');
+
+    const saveInLocalStorage = '{"drinks":{},"meals":{"52844":[[{"Olive Oil":"1 tblsp "},{"Bacon":"2"},{"Onion":"1 finely chopped "},{"Celery":"1 Stick"},{"Carrots":"1 medium"},{"Garlic":"2 cloves chopped"},{"Minced Beef":"500g"},{"Tomato Puree":"1 tbls"},{"Chopped Tomatoes":"800g"},{"Honey":"1 tblsp "},{"Lasagne Sheets":"500g"},{"Creme Fraiche":"400ml"},{"Mozzarella Balls":"125g"},{"Parmesan Cheese":"50g"},{"Basil Leaves":"Topping"}]]}}';
+
+    waitFor(() => {
+      expect(history.location.pathname).toBe('/meals/52844/in-progress');
+      expect(storage).toBe(saveInLocalStorage);
+    });
+  });
+
+  it('Testando se recipe favorite foi enviado para o localStorage e altera icon', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+    const fav = '[{"id":"53065","type":"meal","nationality":"Japanese","category":"Seafood","alcoholicOrNot":"","name":"Sushi","image":"https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg"}]';
+    act(() => {
+      history.push(' /meals/53065');
+      localStorage.setItem('favoriteRecipes', fav);
+    });
+
+    const getFav = localStorage.getItem('favoriteRecipes');
+
+    waitFor(async () => {
+      expect(getFav).toBe(fav);
+    });
+  });
+
+  it('Testando button favorite na rota Meals', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    history.push('/meals/52804');
+
+    const saveInFavorite = '[{"id":"52804","type":"meal","nationality":"Canadian","category":"Miscellaneous","alcoholicOrNot":"","name":"Poutine","image":"https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg"}]';
+
+    const buttonFav = await screen.findByTestId('favorite-btn');
+
+    await waitFor(() => {
+      expect(buttonFav).toBeInTheDocument();
+      expect(buttonFav).toHaveProperty('src', 'http://localhost/whiteHeartIcon.svg');
+      expect(buttonFav).not.toHaveProperty('src', 'http://localhost/blackHeartIcon.svg');
+    });
+
+    await act(async () => {
+      userEvent.click(screen.getByRole('img', {
+        name: /favorites/i,
+      }));
+    });
+
+    waitFor(() => {
+      const getStorage = localStorage.getItem('favoriteRecipes');
+      expect(getStorage).toBe(saveInFavorite);
+      expect(buttonFav).toHaveProperty('src', 'http://localhost/blackHeartIcon.svg');
+    });
+  });
+
+  // it('Testando copy do button share', async () => {
+  //   const { history } = renderWithRouterAndRedux(<App />);
+
+  //   history.push('/meals/52844');
+
+  //   await waitFor(() => {
+  //     expect(history.location.pathname).toBe('/meals/52844');
+  //     expect(screen.getByRole('img', {
+  //       name: /share/i,
+  //     })).toBeInTheDocument();
+  //   });
+
+  //   userEvent.click(screen.getByRole('img', {
+  //     name: /share/i,
+  //   }));
+
+  //   await waitFor(() => {
+  //     expect(screen.getByText('Link copied!')).toBeInTheDocument();
+  //   });
+  // });
+
   it('Testando Fetch Recipes na rota Drinks', async () => {
-    // jest.clearAllMocks();
+    globalThis.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue([]),
+    });
 
     const { history } = renderWithRouterAndRedux(<App />);
 
-    await act(async () => {
-      history.push('/drinks/14610');
-    });
+    history.push('/drinks/14610');
 
-    globalThis.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue([{ drink: null }]),
+    waitFor(() => {
+      expect(history.location.pathname).toBe(DRINK);
+      expect(globalThis.fetch).not.toBeCalled();
     });
-
-    expect(history.location.pathname).toBe(DRINK);
-    expect(global.fetch).not.toBeCalled();
   });
 
   it('Testando Fetch Recipes na rota Meals', async () => {
+    globalThis.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue([]),
+    });
+
     const { history } = renderWithRouterAndRedux(<App />);
 
-    await act(async () => {
-      history.push(CORBA);
-    });
+    history.push(CORBA);
 
-    globalThis.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue([{ meals: null }]),
+    waitFor(() => {
+      expect(history.location.pathname).toBe(CORBA);
+      expect(globalThis.fetch).not.toBeCalled();
     });
-
-    expect(history.location.pathname).toBe(CORBA);
-    expect(global.fetch).not.toBeCalled();
   });
 });

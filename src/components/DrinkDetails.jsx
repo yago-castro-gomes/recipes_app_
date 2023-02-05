@@ -66,8 +66,8 @@ export default function DrinkDetails() {
             return global.alert(alertMenssage);
           }
           return data.drinks;
-        } catch (error) {
-          console.log(error);
+        } catch {
+          return false;
         }
       }
     };
@@ -82,8 +82,8 @@ export default function DrinkDetails() {
         const data = await response.meals;
         const dataSlice = data.slice(0, SIX);
         setMealsRecom(dataSlice);
-      } catch (error) {
-        console.log(error);
+      } catch {
+        return false;
       }
     };
     fetchMealsRecom();
@@ -117,7 +117,7 @@ export default function DrinkDetails() {
     setArrayMealsAndIng();
   }, [dataApi, dataObject]);
 
-  console.log(dataObject);
+  // console.log(dataObject);
 
   useEffect(() => {
     if (dataApi.length !== 0) {
