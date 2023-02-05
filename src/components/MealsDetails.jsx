@@ -41,7 +41,7 @@ export default function MealsDetails() {
     }
     keyInProgressObject.meals[keyDinamic] = { id };
     const newMeals = { ...keyInProgressObject.meals,
-      [keyDinamic]: [ingMea] };
+      [keyDinamic]: [] };
     const newKeyInProgress = { ...keyInProgressObject, meals: newMeals };
     const newKeyInProgressString = JSON.stringify(newKeyInProgress);
     localStorage.setItem('inProgressRecipes', newKeyInProgressString);
@@ -65,9 +65,6 @@ export default function MealsDetails() {
           const response = await fetchApi.json();
           const data = await response;
           setDataApi(data.meals);
-          if (data.meals === null) {
-            return global.alert(alertMenssage);
-          }
           return data.meals;
         } catch (error) {
           console.log(error);

@@ -4,11 +4,11 @@ import shareButton from '../images/shareIcon.svg';
 import favoritesImg from '../images/whiteHeartIcon.svg';
 import { keyInProgress } from '../services/key';
 import blackFavorite from '../images/blackHeartIcon.svg';
-import { fetchMealWithId } from '../services/apiFood';
+import { fetchDrinksWithId } from '../services/apiFood';
 
 const copy = require('clipboard-copy');
 
-export default function MealsInProgoress() {
+export default function DrinksInProgoress() {
   const { id } = useParams();
   const history = useHistory();
   const { pathname } = history.location;
@@ -20,17 +20,16 @@ export default function MealsInProgoress() {
   const [favoriteImage, setFavoriteImage] = useState(favoritesImg);
 
   const handleShare = () => {
-    copy(`http://localhost:3000/meals/${id}`);
+    copy(`http://localhost:3000/drinks/${id}`);
     setIsCopy(true);
   };
 
   useEffect(() => {
-    const fetchMealId = async () => {
-      setDataApi(await fetchMealWithId(id));
+    const fetchDrinksId = async () => {
+      setDataApi(await fetchDrinksWithId(id));
     };
-    fetchMealId();
+    fetchDrinksId();
   }, [id, pathname]);
-
   const dataObject = dataApi[0];
 
   useEffect(() => {
@@ -65,32 +64,45 @@ export default function MealsInProgoress() {
     const updateCheck = [...ingMea];
     updateCheck[i].isChecked = !updateCheck[i].isChecked;
     setIngMea(updateCheck);
-
     const storedValue = localStorage.getItem('inProgressRecipes');
-    const keyInProgressObject = storedValue ? JSON.parse(storedValue) : keyInProgress;
-    const findKey = Object.keys(keyInProgressObject.meals)
-      .find((mealId) => mealId === id);
-
+    const keyInProgressObject = storedValue ? JSON.parse(storedValue)
+      : localStorage.setItem('inProgressRecipes', JSON.stringify(keyInProgress));
+    const findKey = Object.keys(keyInProgressObject.drinks)
+      .find((drinkId) => drinkId === id);
     if (findKey) {
-      keyInProgressObject.meals[findKey] = updateCheck;
-      const newKeyInProgressString = JSON.stringify(keyInProgressObject);
-      localStorage.setItem('inProgressRecipes', newKeyInProgressString);
+      keyInProgressObject.drinks[findKey] = updateCheck;
+      const newKeyInProgressStringx = JSON.stringify(keyInProgressObject);
+      localStorage.setItem('inProgressRecipes', newKeyInProgressStringx);
     }
   };
+
   useEffect(() => {
     const storedValue2 = localStorage.getItem('inProgressRecipes');
     if (storedValue2 === null) {
       const keyInProgressObject = storedValue2 ? JSON.parse(storedValue2)
         : keyInProgress;
       const keyDinamic = id;
-      keyInProgressObject.meals[keyDinamic] = { id };
-      const newMeals = { ...keyInProgressObject.meals,
+      keyInProgressObject.drinks[keyDinamic] = { id };
+      const newDrinks = { ...keyInProgressObject.drinks,
         [keyDinamic]: [] };
-      const newKeyInProgress = { ...keyInProgressObject, drinks: newMeals };
+      const newKeyInProgress = { ...keyInProgressObject, drinks: newDrinks };
       const newKeyInProgressString = JSON.stringify(newKeyInProgress);
       localStorage.setItem('inProgressRecipes', newKeyInProgressString);
     }
   }, []);
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('inProgressRecipes');
+    const keyInProgressObjectSaved = storedValue ? JSON.parse(storedValue)
+      : keyInProgress;
+    const findKey = Object.keys(keyInProgressObjectSaved.drinks)
+      .find((drinkId) => drinkId === id);
+    if (findKey && keyInProgressObjectSaved.drinks[id].length > 0) {
+      const checkedIngs = keyInProgressObjectSaved.drinks[id];
+      setIngMea(checkedIngs);
+    }
+    console.log(ingMea);
+  }, [id, dataApi]);
 
   useEffect(() => {
     const local = localStorage.getItem('doneRecipes');
@@ -98,22 +110,37 @@ export default function MealsInProgoress() {
       localStorage.setItem('doneRecipes', '[]');
     }
     if (dataApi.length !== 0) {
+      const checkArea = dataObject.strArea in dataObject ? dataObject[strArea] : '';
       const newRecipe = {
-        id: dataObject.idMeal,
-        type: 'meal',
-        nationality: dataObject.strArea,
+        id: dataObject.idDrink,
+        type: 'drink',
+        nationality: checkArea,
         category: dataObject.strCategory,
-        alcoholicOrNot: '',
-        name: dataObject.strMeal,
-        image: dataObject.strMealThumb,
+        alcoholicOrNot: dataObject.strAlcoholic,
+        name: dataObject.strDrink,
+        image: dataObject.strDrinkThumb,
         doneDate: new Date(),
-        tags: dataObject.strTags.split(','),
+        tags: [],
       };
       setDoneRecipeStorage(newRecipe);
     }
   }, [dataApi]);
 
-  console.log(doneRecipeStorage);
+  useEffect(() => {
+    if (dataApi.length !== 0) {
+      const checkArea = dataObject.strArea in dataObject ? dataObject[strArea] : '';
+      const favoriteStorage = {
+        id: dataObject.idDrink,
+        type: 'drink',
+        nationality: checkArea,
+        category: dataObject.strCategory,
+        alcoholicOrNot: dataObject.strAlcoholic,
+        name: dataObject.strDrink,
+        image: dataObject.strDrinkThumb,
+      };
+      setFavorites(favoriteStorage);
+    }
+  }, [dataApi]);
 
   const finishBtn = () => {
     const local = localStorage.getItem('doneRecipes');
@@ -125,32 +152,6 @@ export default function MealsInProgoress() {
     }
     history.push('/done-recipes');
   };
-
-  useEffect(() => {
-    if (dataApi.length !== 0) {
-      const favoriteStorage = {
-        id: dataObject.idMeal,
-        type: 'meal',
-        nationality: dataObject.strArea,
-        category: dataObject.strCategory,
-        alcoholicOrNot: '',
-        name: dataObject.strMeal,
-        image: dataObject.strMealThumb,
-      };
-      setFavorites(favoriteStorage);
-    }
-  }, [dataApi]);
-
-  useEffect(() => {
-    const storedValue = localStorage.getItem('inProgressRecipes');
-    const keyInProgressObject = storedValue ? JSON.parse(storedValue) : keyInProgress;
-    const findKey = Object.keys(keyInProgressObject.meals)
-      .find((mealId) => mealId === id);
-    if (findKey === id && keyInProgressObject.meals[id].length > 0) {
-      const checkedIngs = keyInProgressObject.meals[id];
-      setIngMea(checkedIngs);
-    }
-  }, [id, dataApi]);
 
   const favoriteBtn = () => {
     if (localStorage.getItem('favoriteRecipes') === null) {
@@ -181,17 +182,17 @@ export default function MealsInProgoress() {
     }
   }, []);
 
-  if (pathname === `/meals/${id}/in-progress` && dataApi.length !== 0) {
+  if (pathname === `/drinks/${id}/in-progress` && dataApi.length !== 0) {
     const checkEvery = ingMea.every((check) => check.isChecked === true);
     return (
       <div>
         <img
           data-testid="recipe-photo"
-          src={ dataObject.strMealThumb }
-          alt={ dataObject.strMealThumb }
+          src={ dataObject.strDrinkThumb }
+          alt={ dataObject.strDrinkThumb }
           width="30%"
         />
-        <div data-testid="recipe-title">{ dataObject.strMeal }</div>
+        <div data-testid="recipe-title">{ dataObject.strDrink }</div>
         <div>
           <div>
             { isCopy
@@ -208,6 +209,7 @@ export default function MealsInProgoress() {
         </div>
         <div data-testid="recipe-category">
           { dataObject.strCategory }
+          { dataObject.strAlcoholic }
         </div>
         <div data-testid="instructions">{ dataObject.strInstructions }</div>
         <div>

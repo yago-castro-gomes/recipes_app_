@@ -33,7 +33,7 @@ export default function DrinkDetails() {
     }
     keyInProgressObject.drinks[keyDinamic] = { id };
     const newDrinks = { ...keyInProgressObject.drinks,
-      [keyDinamic]: [ingMea] };
+      [keyDinamic]: [] };
     const newKeyInProgress = { ...keyInProgressObject, drinks: newDrinks };
     const newKeyInProgressString = JSON.stringify(newKeyInProgress);
     localStorage.setItem('inProgressRecipes', newKeyInProgressString);
@@ -62,9 +62,6 @@ export default function DrinkDetails() {
           const response = await fetchApi.json();
           const data = await response;
           setDataApi(data.drinks);
-          if (data.drinks === null) {
-            return global.alert(alertMenssage);
-          }
           return data.drinks;
         } catch {
           return false;
@@ -116,8 +113,6 @@ export default function DrinkDetails() {
     };
     setArrayMealsAndIng();
   }, [dataApi, dataObject]);
-
-  // console.log(dataObject);
 
   useEffect(() => {
     if (dataApi.length !== 0) {
