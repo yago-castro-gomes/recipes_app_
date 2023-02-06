@@ -25,7 +25,7 @@ describe('Testando componente Recipes', () => {
       categories.forEach((element) => {
         expect(screen.getByTestId(`${element}-category-filte`)).toBeInTheDocument();
       });
-      expect(screen.getAllByTestId(/-category-filte/g)).toHaveLength(5);
+      expect(screen.getAllByTestId(/-category-filter/g)).toHaveLength(5);
     });
   });
   it('Deve conter 5 botões da categoria de bebeidas', async () => {
@@ -33,14 +33,14 @@ describe('Testando componente Recipes', () => {
     const categories = ['Ordinary Drink', 'Cocktail', 'Shake', 'Other', 'Unknown', 'Cocoa', 'Shot', 'Coffee', 'Tea', 'Homemade Liqueur', 'Punch', 'Party Drink', 'Beer', 'Soft Drink'];
     await waitFor(() => {
       categories.forEach((element) => {
-        expect(screen.getByTestId(`${element}-category-filte`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${element}-category-filter`)).toBeInTheDocument();
       });
-      expect(screen.getAllByTestId(/-category-filte/g)).toHaveLength(5);
+      expect(screen.getAllByTestId(/-category-filter/g)).toHaveLength(5);
     });
   });
   it('Testando filtro da categorias comidas', async () => {
     renderWithRouterAndRedux(<MealsExibithion />);
-    const buttonBeef = screen.getByTestId(/Beef-category-filte/g);
+    const buttonBeef = await screen.getByTestId(/Beef-category-filter/g);
     await waitFor(() => {
       expect(buttonBeef).toBeInTheDocument();
     });
@@ -53,7 +53,7 @@ describe('Testando componente Recipes', () => {
   });
   it('Testando filtro da categorias bebidas', async () => {
     renderWithRouterAndRedux(<DrinkExibithion />);
-    const buttonCocktail = screen.getByTestId(/Cocktail-category-filte/g);
+    const buttonCocktail = await screen.getByTestId(/Cocktail-category-filter/g);
     await waitFor(() => {
       expect(buttonCocktail).toBeInTheDocument();
     });
@@ -66,7 +66,7 @@ describe('Testando componente Recipes', () => {
   });
   it('Testando filtros repetidos', async () => {
     renderWithRouterAndRedux(<Recipes />);
-    const buttonCocktail = screen.getByTestId(/Cocktail-category-filte/g);
+    const buttonCocktail = await screen.getByTestId(/Cocktail-category-filter/g);
     await waitFor(() => {
       expect(buttonCocktail).toBeInTheDocument();
     });
@@ -85,7 +85,7 @@ describe('Testando componente Recipes', () => {
   });
   it('Testando redirect rota', async () => {
     renderWithRouterAndRedux(<Recipes />);
-    const buttonCocktail = screen.getByTestId(/Cocktail-category-filte/g);
+    const buttonCocktail = await screen.getByTestId(/Cocktail-category-filter/g);
     await waitFor(() => {
       expect(buttonCocktail).toBeInTheDocument();
     });
@@ -103,7 +103,7 @@ describe('Testando componente Recipes', () => {
   });
   it('Testando redirect rota drinks', async () => {
     const { history } = renderWithRouterAndRedux(<Recipes />);
-    const buttonCocktail = screen.getByTestId(/Cocktail-category-filte/g);
+    const buttonCocktail = await screen.getByTestId(/Cocktail-category-filte/g);
     await waitFor(() => {
       expect(buttonCocktail).toBeInTheDocument();
     });
@@ -125,7 +125,7 @@ describe('Testando componente Recipes', () => {
   });
   it('Testando redirect rota meals', async () => {
     const { history } = renderWithRouterAndRedux(<Recipes />);
-    const buttonBeef = screen.getByTestId(/Beef-category-filte/g);
+    const buttonBeef = await screen.getByTestId(/Beef-category-filte/g);
     await waitFor(() => {
       expect(buttonBeef).toBeInTheDocument();
     });

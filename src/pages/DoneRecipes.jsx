@@ -18,8 +18,13 @@ export default function DoneRecipes() {
 
   useEffect(() => {
     const local = localStorage.getItem('doneRecipes');
-    const parseStorage = JSON.parse(local);
-    setAllRecipes(parseStorage);
+    if (local === null) {
+      localStorage.setItem('doneRecipes', '[]');
+    }
+    if (local !== null) {
+      const parseStorage = JSON.parse(local);
+      setAllRecipes(parseStorage);
+    }
   }, []);
 
   useEffect(() => {
@@ -42,7 +47,6 @@ export default function DoneRecipes() {
     }
   }, [buttonFilter]);
 
-  console.log(buttonFilter);
   return (
     <div>
       <Header

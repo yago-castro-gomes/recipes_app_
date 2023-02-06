@@ -36,9 +36,9 @@ export default function MealsDetails() {
     const storedValue = localStorage.getItem('inProgressRecipes');
     const keyInProgressObject = storedValue ? JSON.parse(storedValue) : keyInProgress;
     const keyDinamic = id;
-    if (!keyInProgressObject.meals) {
-      keyInProgressObject.meals = {};
-    }
+    // if (!keyInProgressObject.meals) {
+    //   keyInProgressObject.meals = {};
+    // }
     keyInProgressObject.meals[keyDinamic] = { id };
     const newMeals = { ...keyInProgressObject.meals,
       [keyDinamic]: [] };
@@ -103,11 +103,15 @@ export default function MealsDetails() {
       localStorage.setItem('favoriteRecipes', '[]');
     }
     const local = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    local.push(favorite);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(local));
-    setFavoriteImage(blackFavorite);
-    if (favoriteImage === blackFavorite) {
+    const filterStorage = local.filter((fav) => fav.id !== favorite.id);
+    const findId = local.some((fav) => fav.id === favorite.id);
+    if (findId === true) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify(filterStorage));
       setFavoriteImage(favoritesImg);
+    } else {
+      local.push(favorite);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(local));
+      setFavoriteImage(blackFavorite);
     }
   };
 

@@ -28,9 +28,9 @@ export default function DrinkDetails() {
     const storedValue = localStorage.getItem('inProgressRecipes');
     const keyInProgressObject = storedValue ? JSON.parse(storedValue) : keyInProgress;
     const keyDinamic = id;
-    if (!keyInProgressObject.drinks) {
-      keyInProgressObject.drinks = {};
-    }
+    // if (!keyInProgressObject.drinks) {
+    //   keyInProgressObject.drinks = {};
+    // }
     keyInProgressObject.drinks[keyDinamic] = { id };
     const newDrinks = { ...keyInProgressObject.drinks,
       [keyDinamic]: [] };
@@ -135,11 +135,15 @@ export default function DrinkDetails() {
       localStorage.setItem('favoriteRecipes', '[]');
     }
     const local = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    local.push(favorite);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(local));
-    setFavoriteImage(blackFavorite);
-    if (favoriteImage === blackFavorite) {
+    const filterStorage = local.filter((fav) => fav.id !== favorite.id);
+    const findId = local.some((fav) => fav.id === favorite.id);
+    if (findId === true) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify(filterStorage));
       setFavoriteImage(favoritesImg);
+    } else {
+      local.push(favorite);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(local));
+      setFavoriteImage(blackFavorite);
     }
   };
 

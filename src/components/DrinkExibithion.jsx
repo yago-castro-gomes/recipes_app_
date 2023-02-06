@@ -48,12 +48,9 @@ function DrinkExibithion() {
       if (saveInputCategory !== '') {
         try {
           const fetchApi = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${saveInputCategory}`);
-          console.log(fetchApi);
-          if (fetchApi.ok) {
-            const response = await fetchApi.json();
-            const data = await response.drinks;
-            dispatch(saveRecipeDrinks(data));
-          }
+          const response = await fetchApi.json();
+          const data = await response.drinks;
+          dispatch(saveRecipeDrinks(data));
         } catch (error) {
           console.log(error);
         }

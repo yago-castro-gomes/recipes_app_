@@ -44,7 +44,7 @@ describe('Testando componente Recipes', () => {
     });
   });
 
-  it('Testando componente Recipes na rota Meals', async () => {
+  it('Testando componente Recipes na rota Drinks', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
     await act(async () => {
       history.push('/drinks');
