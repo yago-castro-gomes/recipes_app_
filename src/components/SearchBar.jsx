@@ -10,6 +10,8 @@ import {
   fetchDrinkName,
   fetchDrinkLetter,
 } from '../services/apiFood';
+import '../styles/searchbar.css';
+import search from '../images/searchIcon.svg';
 
 function SearchBar() {
   const [radioState, setRadioState] = useState('');
@@ -18,7 +20,6 @@ function SearchBar() {
   const dispatch = useDispatch();
 
   const { recipesMeals, recipesDrinks } = useSelector((state) => state.recipeReduce);
-  // console.log(recipesMeals, recipesDrinks);
   const { pathname } = history.location;
 
   const searchApiMeals = async () => {
@@ -26,14 +27,12 @@ function SearchBar() {
       dispatch(saveRecipeMeals(await fetchIngredient(textInput)));
     }
     if (radioState === 'Name') {
-      // setData(await fetchName(textInput));
       dispatch(saveRecipeMeals(await fetchName(textInput)));
     }
     if (radioState === 'FirstLetter') {
       if (textInput.length > 1) {
         global.alert('Your search must have only 1 (one) character');
       } else {
-        // setData(await fetchLetter(textInput));
         dispatch(saveRecipeMeals(await fetchLetter(textInput)));
       }
     }
@@ -81,62 +80,70 @@ function SearchBar() {
 
   return (
     <div className="form-container">
+      <div id="search-icon-img">
+        <img
+          src={ search }
+          alt="search"
+          className="icon-search"
+        />
+      </div>
       <div>
         <input
           value={ textInput }
           type="text"
           data-testid="search-input"
           onChange={ (e) => setTextInput(e.target.value) }
+          placeholder="Write here"
+          id="input-search"
         />
       </div>
-      <div>
-        <label htmlFor="radio-search">
-          Ingredient
-          <input
-            id="radio-search"
-            className="form-check-input"
-            type="radio"
-            data-testid="ingredient-search-radio"
-            name="radio-search"
-            value="Ingredient"
-            onChange={ (e) => setRadioState(e.target.value) }
-          />
-        </label>
-      </div>
+      <div className="search-radio">
+        <div>
+          <label htmlFor="radio-search">
+            <span className="name-input"> Ingredient</span>
+            <input
+              id="radio-search"
+              className="form-check-input"
+              type="radio"
+              data-testid="ingredient-search-radio"
+              name="radio-search"
+              value="Ingredient"
+              onChange={ (e) => setRadioState(e.target.value) }
+            />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="name-input">
+            <span className="name-input">Name</span>
+            <input
+              id="name-input"
+              className="form-check-input"
+              type="radio"
+              data-testid="name-search-radio"
+              name="radio-search"
+              value="Name"
+              onChange={ (e) => setRadioState(e.target.value) }
+            />
+          </label>
 
-      <br />
-      <div>
-        <label htmlFor="name-input">
-          Name
-          <input
-            id="name-input"
-            className="form-check-input"
-            type="radio"
-            data-testid="name-search-radio"
-            name="radio-search"
-            value="Name"
-            onChange={ (e) => setRadioState(e.target.value) }
-          />
-        </label>
-
+        </div>
+        <br />
+        <div>
+          <label htmlFor="letter-input">
+            <span className="name-input">Letter</span>
+            <input
+              id="letter-input"
+              className="form-check-input"
+              type="radio"
+              data-testid="first-letter-search-radio"
+              name="radio-search"
+              value="FirstLetter"
+              onChange={ (e) => setRadioState(e.target.value) }
+            />
+          </label>
+        </div>
       </div>
-      <br />
-      <div>
-        <label htmlFor="letter-input">
-          Letter
-          <input
-            id="letter-input"
-            className="form-check-input"
-            type="radio"
-            data-testid="first-letter-search-radio"
-            name="radio-search"
-            value="FirstLetter"
-            onChange={ (e) => setRadioState(e.target.value) }
-          />
-        </label>
-      </div>
-      <br />
-      <div>
+      <div id="btn-container">
         <button
           className="btn btn-success"
           type="submit"

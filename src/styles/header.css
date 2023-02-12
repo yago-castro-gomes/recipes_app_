@@ -1,0 +1,41 @@
+* {
+    box-sizing: border-box;
+    font-family: ' CustomFont', Arial, Helvetica, sans-serif;
+    margin: 0;
+    }
+
+.header-container {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #ffd312;
+    padding: 5px;
+}
+
+
+.icon-header{
+    width: 35px;
+    height: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+#search-icon{
+    width: 30px;
+}
+
+.button-header{
+    background-color: transparent;
+    border: none;
+}
+
+.title-page {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    color: #b32728;
+    font-size: 23px;
+    font-weight: bold;
+    margin-top: 28px;
+}
+

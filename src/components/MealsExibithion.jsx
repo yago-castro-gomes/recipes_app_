@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { saveRecipeMeals } from '../redux/actions';
+import '../styles/recipes.css';
+import Loading from './Loading';
 
 const TWENTY = 12;
 const FIVE = 5;
@@ -11,7 +13,7 @@ function MealsExibithion() {
   const [initialData, setinitialData] = useState([]);
   const [saveCategory, setSaveCategory] = useState([]);
   const [saveInputCategory, setsaveInputCategory] = useState('');
-  // const [saveElementsFiltred, setSaveElementsFiltred] = useState([]);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { pathname } = history.location;
   const dispatch = useDispatch();
@@ -33,11 +35,13 @@ function MealsExibithion() {
   useEffect(() => {
     const checkCategoryMeals = async () => {
       if (pathname === '/meals') {
+        setLoading(true);
         const fetchApi = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
         const response = await fetchApi.json();
         const data = await response.meals;
         const sliceCategory = data.slice(0, FIVE);
         setSaveCategory(sliceCategory);
+        setLoading(false);
       }
     };
 
@@ -48,10 +52,12 @@ function MealsExibithion() {
     const filterCategory = async () => {
       if (saveInputCategory !== '') {
         try {
+          setLoading(true);
           const fetchApi = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${saveInputCategory}`);
           const response = await fetchApi.json();
           const data = await response.meals;
           dispatch(saveRecipeMeals(data));
+          setLoading(false);
         // setSaveElementsFiltred(data.slice(0, TWENTY));
         } catch (error) {
           console.log(error);
@@ -69,7 +75,6 @@ function MealsExibithion() {
     saveCategory.map((cat) => {
       if (saveInputCategory === cat.strCategory) {
         dispatch(saveRecipeMeals(initialData));
-        console.log(cat.strCategory);
         return setsaveInputCategory('');
       }
       return setsaveInputCategory(e);
@@ -78,43 +83,60 @@ function MealsExibithion() {
 
   return (
     <div>
-      <div>
-        { saveCategory.map((category) => (
-          <input
-            data-testid={ `${category.strCategory}-category-filter` }
-            key={ category.strCategory }
-            value={ category.strCategory }
-            onClick={ (e) => handleToggle(e.target.value) }
+      <div className="category-content">
+        <div>
+          {/* eslint-disable-next-line */}
+          <button
+            data-testid="All-category-filter"
             type="button"
+            onClick={ clearFilters }
+            className="categoryBtn"
+            id="all-btn"
           />
-        ))}
-      </div>
-      <button
-        data-testid="All-category-filter"
-        type="button"
-        onClick={ clearFilters }
-      >
-        All
-      </button>
-      <div>
-        { recipesMeals.map((meal, index) => (
-          <div key={ meal.idMeal }>
-            <Link to={ `/meals/${meal.idMeal}` }>
-              <div data-testid={ `${index}-recipe-card` }>
-                <img
-                  src={ meal.strMealThumb }
-                  alt=""
-                  data-testid={ `${index}-card-img` }
-                  width="40%"
-                />
-                <div data-testid={ `${index}-card-name` }>
-                  { meal.strMeal }
-                </div>
+          <div>All</div>
+        </div>
+        { saveCategory.map((category) => (
+          <div key={ category.strCategory }>
+            <label htmlFor={ category.strCategory }>
+              {/* eslint-disable-next-line */}
+              <button
+                data-testid={ `${category.strCategory}-category-filter` }
+                className="categoryBtn"
+                value={ category.strCategory }
+                onClick={ (e) => handleToggle(e.target.value) }
+                type="button"
+                id={ category.strCategory }
+              />
+              <div>
+                { category.strCategory }
               </div>
-            </Link>
+            </label>
           </div>
         ))}
       </div>
+      { loading ? <Loading /> : (
+        <div className="itens-content">
+          { recipesMeals.map((meal, index) => (
+            <div key={ meal.idMeal }>
+              <div className="card-content">
+                <Link to={ `/meals/${meal.idMeal}` }>
+                  <div data-testid={ `${index}-recipe-card` } className="content-image">
+                    <img
+                      src={ meal.strMealThumb }
+                      alt=""
+                      data-testid={ `${index}-card-img` }
+                      width="40%"
+                      className="image-card"
+                    />
+                  </div>
+                  <div data-testid={ `${index}-card-name` } className="name-card">
+                    { meal.strMeal }
+                  </div>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>)}
     </div>
   );
 }

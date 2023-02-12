@@ -21,12 +21,13 @@ export default function Footer() {
           <button
             type="button"
             onClick={ handDrinks }
-            className="footer-drinks"
+            className="button-footer"
           >
             <img
               src={ drinkIcon }
               alt="drinks"
               data-testid="drinks-bottom-btn"
+              className="icon-footer"
             />
           </button>
         </div>
@@ -34,11 +35,13 @@ export default function Footer() {
           <button
             type="button"
             onClick={ handMeals }
+            className="button-footer"
           >
             <img
               src={ mealIcon }
               alt="meal"
               data-testid="meals-bottom-btn"
+              className="icon-footer"
             />
           </button>
         </div>

@@ -5,6 +5,7 @@ import favoritesImg from '../images/whiteHeartIcon.svg';
 import { keyInProgress } from '../services/key';
 import blackFavorite from '../images/blackHeartIcon.svg';
 import { fetchMealWithId } from '../services/apiFood';
+import '../styles/progress.css';
 
 const copy = require('clipboard-copy');
 
@@ -39,7 +40,9 @@ export default function MealsInProgoress() {
         const ingFilter = Object.keys(dataObject)
           .filter((cat) => cat.includes('strIng'));
         const machIngs = ingFilter.map((ing) => dataObject[ing]);
+        console.log(machIngs);
         const machResult = machIngs.filter((ing) => ing !== null);
+        console.log(machResult);
 
         const measureFilter = Object.keys(dataObject)
           .filter((cat) => cat.includes('strMeasu'));
@@ -185,32 +188,55 @@ export default function MealsInProgoress() {
     const checkEvery = ingMea.every((check) => check.isChecked === true);
     return (
       <div>
-        <img
-          data-testid="recipe-photo"
-          src={ dataObject.strMealThumb }
-          alt={ dataObject.strMealThumb }
-          width="30%"
-        />
-        <div data-testid="recipe-title">{ dataObject.strMeal }</div>
-        <div>
-          <div>
-            { isCopy
-              ? <p>Link copied!</p>
-              : (
-                <button type="button" data-testid="share-btn" onClick={ handleShare }>
-                  <img src={ shareButton } alt="share" />
-                </button>
-              )}
+        <div className="container-progress">
+          <img
+            data-testid="recipe-photo"
+            src={ dataObject.strMealThumb }
+            alt={ dataObject.strMealThumb }
+            className="img-progress"
+          />
+          <div data-testid="recipe-category" id="category-progress">
+            { dataObject.strCategory }
           </div>
-          <button type="button" onClick={ favoriteBtn }>
-            <img data-testid="favorite-btn" src={ favoriteImage } alt="favorites" />
-          </button>
+          <div
+            data-testid="recipe-title"
+            className="name-progress"
+          >
+            { dataObject.strMeal }
+          </div>
+          <div className="bnt-content">
+            <div>
+              { isCopy
+                ? <p>Link copied!</p>
+                : (
+                  <button
+                    type="button"
+                    data-testid="share-btn"
+                    onClick={ handleShare }
+                    className="btn-progress"
+                  >
+                    <img src={ shareButton } alt="share" />
+                  </button>
+                )}
+            </div>
+            <button
+              type="button"
+              onClick={ favoriteBtn }
+              className="btn-progress"
+            >
+              <img data-testid="favorite-btn" src={ favoriteImage } alt="favorites" />
+            </button>
+          </div>
         </div>
-        <div data-testid="recipe-category">
-          { dataObject.strCategory }
+        <legend>Instruction</legend>
+        <div
+          data-testid="instructions"
+          className="instruction-details"
+        >
+          { dataObject.strInstructions }
         </div>
-        <div data-testid="instructions">{ dataObject.strInstructions }</div>
-        <div>
+        <legend>Ingredients</legend>
+        <div className="ing-progress">
           {
             ingMea.map((ing, i) => (
               <label
@@ -220,26 +246,34 @@ export default function MealsInProgoress() {
                 style={ { textDecoration: ing.isChecked
                   ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
               >
-                {Object.keys(ing)[0]}
-                -
-                {Object.values(ing)[0]}
-                <input
-                  type="checkbox"
-                  name={ i }
-                  onChange={ () => handdleTrough(i) }
-                  checked={ ing.isChecked }
-                />
+                <div className="aling-check">
+                  {Object.keys(ing)[0]}
+                  -
+                  {Object.values(ing)[0]}
+
+                  <input
+                    type="checkbox"
+                    name={ i }
+                    onChange={ () => handdleTrough(i) }
+                    checked={ ing.isChecked }
+                    className="form-check-input"
+                  />
+                </div>
               </label>
             ))
           }
         </div>
-        <button
-          data-testid="finish-recipe-btn"
-          disabled={ !checkEvery }
-          onClick={ finishBtn }
-        >
-          Finish
-        </button>
+        <div className="btn-justify">
+          <button
+            data-testid="finish-recipe-btn"
+            disabled={ !checkEvery }
+            onClick={ finishBtn }
+            id="btn-finish"
+            className="btn btn-success"
+          >
+            Finish
+          </button>
+        </div>
       </div>
     );
   }

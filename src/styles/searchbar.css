@@ -1,0 +1,50 @@
+.form-container{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #b32728;
+    position: absolute;
+    right: 0px;
+    background-color: white;
+    width: 355px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#input-search{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#btn-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn{
+    background-color: #b32728;
+}
+
+.search-radio{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.name-input {
+    margin-right: 5px;
+}
+
+#search-icon-img{
+   display: flex;
+   justify-content: center;
+   width: 35px;
+   margin: auto;
+}  
+
+.form-check-input:checked{
+    background-color: #b32728;
+    border-color: yellow;
+}

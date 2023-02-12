@@ -5,12 +5,26 @@
 
 .footer {
   align-items: center;
-  background-color: #e5a78d;
+  background-color: #b32728;
   bottom: 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   left: 0;
   position: fixed;
   text-align: center;
   width: 100%;
+  height: 43px;
 }
+
+
+.button-footer{
+  margin: 30px;
+  background-color: transparent;
+  border: none;
+}
+
+
+.icon-footer {
+  width: 35px;
+}
+

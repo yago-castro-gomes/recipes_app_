@@ -1,67 +1,104 @@
+
+
 * {
-  box-sizing: border-box;
-  font-family: ' CustomFont' , Arial , Helvetica , sans-serif;
-  margin: 0;
+        box-sizing: border-box;
+        font-family: ' CustomFont', Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+}
+
+#login-bg{
+    background-image: url('../assets/bglogin.png');
+    background-size: cover;
+    height: 680px;
 }
 
 .container {
-  align-items: flex-end;
-  background-image: url('../assets/background-2.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 445px;
-  display: flex;
-  font-size: 0.65em;
-  height: 100vh;
-  justify-content: center;
-  padding-bottom: 30%;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
+
 .app-logo {
-  height: auto;
-  left: 9%;
-  position: absolute;
-  top: 5px;
-  width: 85%;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 120px;
+}
+
+/* .title-logo {
+    height: 500px;
+    left: 19%;
+    position: absolute;
+    top: 170px;
+} */
+
+#login-title{
+   display: flex;
+   text-align: center;
+   color: white;
 }
 
 .container-form {
-  align-items: center;
-  background-color: white;
-  border-radius: 1em;
-  box-shadow: 0 0.188em 1.55em rgb(156, 156, 156);
-  display: flex;
-  flex-direction: column;
-  height: 50%;
-  justify-content: space-around;
-  position: relative;
-  width: 70%;
+    align-items: center;
+    /* background-color: white;
+    border-radius: 1em;
+    box-shadow: 0 0.188em 1.55em rgb(156, 156, 156); */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 95%;
 }
 
-input {
-  background-color: rgb(229, 226, 226);
-  border: none;
-  border-radius: 0.25em;
-  font-size: 0.75em;
-  padding: 2em;
-  text-align: center;
+.input-position {
+    background-color: rgb(246, 238, 238);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 0.5em;
+    text-align: center;
+    width: 300px;
+    color: rgb(0, 0, 0);
 }
 
 input:focus {
-  outline-color: rgb(32, 177, 255);
+    outline-color: #b32728;
 }
 
 .btn-form {
-  align-items: center;
-  background-color: tomato;
-  border-radius: 0.25em;
-  cursor: pointer;
-  display: flex;
-  height: 3em;
-  justify-content: center;
-  transition: 0.5s;
-  width: 40%;
+    align-items: center;
+    background-color: #b32728;
+    border-radius: 0.25em;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    height: 3em;
+    justify-content: center;
+    transition: 0.2s;
+    width: 50%;
+    height: 15%;
+    margin-top: 15px;
+    font-size: 15px;
+    transition: 0.5 ease;
+    border-radius: 10px;
 }
 
-.btn-form:hover { transform: scale(1.25);}
+.btn-form:active{
+    transform: scale(1.10);
+    background-color: #C7E34F;
+}
+
+
+.btn-form:disabled {
+    background-color: #c8bebe;
+}
+
+.imgConfg {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin: auto;
+    width: 250px;
+    height: 400px;
+    bottom: 50px;
+}

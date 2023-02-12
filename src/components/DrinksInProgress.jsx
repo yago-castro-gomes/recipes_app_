@@ -186,33 +186,57 @@ export default function DrinksInProgoress() {
     const checkEvery = ingMea.every((check) => check.isChecked === true);
     return (
       <div>
-        <img
-          data-testid="recipe-photo"
-          src={ dataObject.strDrinkThumb }
-          alt={ dataObject.strDrinkThumb }
-          width="30%"
-        />
-        <div data-testid="recipe-title">{ dataObject.strDrink }</div>
-        <div>
-          <div>
-            { isCopy
-              ? <p>Link copied!</p>
-              : (
-                <button type="button" data-testid="share-btn" onClick={ handleShare }>
-                  <img src={ shareButton } alt="share" />
-                </button>
-              )}
+        <div className="container-progress">
+          <img
+            data-testid="recipe-photo"
+            src={ dataObject.strDrinkThumb }
+            alt={ dataObject.strDrinkThumb }
+            className="img-progress"
+          />
+          <div data-testid="recipe-category" id="category-progress">
+            <div>{ dataObject.strCategory }</div>
+            <div>{ dataObject.strAlcoholic }</div>
           </div>
-          <button type="button" onClick={ favoriteBtn }>
-            <img data-testid="favorite-btn" src={ favoriteImage } alt="favorites" />
-          </button>
+          <div
+            data-testid="recipe-title"
+            className="name-progress"
+          >
+            { dataObject.strDrink }
+          </div>
+          <div className="bnt-content">
+            <div>
+              { isCopy
+                ? <p>Link copied!</p>
+                : (
+                  <button
+                    type="button"
+                    data-testid="share-btn"
+                    onClick={ handleShare }
+                    className="btn-progress"
+                  >
+                    <img src={ shareButton } alt="share" />
+                  </button>
+                )}
+            </div>
+            <button
+              type="button"
+              onClick={ favoriteBtn }
+              className="btn-progress"
+            >
+              <img data-testid="favorite-btn" src={ favoriteImage } alt="favorites" />
+            </button>
+          </div>
         </div>
-        <div data-testid="recipe-category">
-          { dataObject.strCategory }
-          { dataObject.strAlcoholic }
+        <legend>Instruction</legend>
+        <div
+          data-testid="instructions"
+          className="instruction-details"
+        >
+          { dataObject.strInstructions }
+
         </div>
-        <div data-testid="instructions">{ dataObject.strInstructions }</div>
-        <div>
+        <legend>Ingredients</legend>
+        <div className="ing-progress">
           {
             ingMea.map((ing, i) => (
               <label
@@ -222,26 +246,33 @@ export default function DrinksInProgoress() {
                 style={ { textDecoration: ing.isChecked
                   ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
               >
-                {Object.keys(ing)[0]}
-                -
-                {Object.values(ing)[0]}
-                <input
-                  type="checkbox"
-                  name={ i }
-                  onChange={ () => handdleTrough(i) }
-                  checked={ ing.isChecked }
-                />
+                <div className="aling-check">
+                  {Object.keys(ing)[0]}
+                  -
+                  {Object.values(ing)[0]}
+                  <input
+                    type="checkbox"
+                    name={ i }
+                    onChange={ () => handdleTrough(i) }
+                    checked={ ing.isChecked }
+                    className="form-check-input"
+                  />
+                </div>
               </label>
             ))
           }
         </div>
-        <button
-          data-testid="finish-recipe-btn"
-          disabled={ !checkEvery }
-          onClick={ finishBtn }
-        >
-          Finish
-        </button>
+        <div className="btn-justify">
+          <button
+            data-testid="finish-recipe-btn"
+            disabled={ !checkEvery }
+            onClick={ finishBtn }
+            id="btn-finish"
+            className="btn btn-success"
+          >
+            Finish
+          </button>
+        </div>
       </div>
     );
   }

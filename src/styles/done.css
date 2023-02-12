@@ -1,0 +1,108 @@
+.done-btn-content{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 8px;
+}
+
+
+.btn-done{
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    width: 50px;
+    height: 50px;
+}
+
+#done-All{
+    background-image: url('../images/allDone.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#done-meal{
+    background-image: url('../images/melasTitle.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#done-drink{
+    background-image: url('../images/drinkTitle.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.done-content{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.card-done-content{
+    margin-top: 30px;
+    background-color: #b32728;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 3px rgb(209, 203, 203);
+}
+
+.card-done{
+    display: flex;
+    justify-content: center;
+}
+
+.done-image{
+    padding: 10px;
+}
+
+.done-image-card{
+    display: flex;
+    width: 340px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 1px rgb(209, 203, 203);
+}
+
+#btn-share-content{
+    margin-left: 24vh;
+}
+
+.btn-share-done{
+  display: flex;
+  background-color: transparent;
+  border: none;
+  margin-top: 10px;
+  width: 30px;
+}
+
+.done-name{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    width: 300px;
+    flex-wrap: wrap;
+    color: #ffd312;
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.card-done-types{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    width: 300px;
+    flex-wrap: wrap;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+

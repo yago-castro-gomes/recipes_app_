@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+
+.category-content{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 8px;
+}
+
+
+.categoryBtn {
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    width: 30px;
+    height: 30px;
+}
+
+#Beef {
+    background-image: url('../images/BeefCategory.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#all-btn {
+    background-image: url('../images/allMealsCategory.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+}
+
+#Breakfast{
+    background-image: url('../images/breakfast.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Chicken{
+    background-image: url('../images/chickenCategory.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Dessert{
+    background-image: url('../images/dessertCategory.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Goat{
+    background-image: url('../images/goatcategory.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+#Goat:hover {
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Dessert:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Chicken:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Breakfast:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Beef:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#all-btn:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#btn-all-drinks{
+    background-image: url('../images/allDrinks.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Ordinary-Drink {
+    background-image: url('../images/ordinaryDrink.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Cocktail {
+    background-image: url('../images/cocktailDrink.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Shake {
+    background-image: url('../images/shakeDrink.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Other-Unknown{
+    background-image: url('../images/otherDrinks.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Cocoa{
+    background-image: url('../images/cocoaDrinks.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#Ordinary-Drink:hover {
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Cocktail:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Shake:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Other-Unknown:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#Cocoa:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#btn-all-drinks:hover{
+    filter: brightness(0) saturate(100%) invert(93%) sepia(18%) saturate(7341%) hue-rotate(346deg) brightness(110%) contrast(103%);
+}
+
+#card-content{
+    display: flex;
+}
+
+.content-image{
+    padding: 10px;
+}
+
+.itens-content{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+
+.name-card{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: 100px;
+    flex-wrap: wrap;
+    color: #b32728;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 8px;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.image-card{
+    display: flex;
+    width: 150px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 1px rgb(209, 203, 203);
+}

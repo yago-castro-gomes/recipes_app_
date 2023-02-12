@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
+import Carousel from 'react-elastic-carousel';
 import '../styles/details.css';
 import { keyInProgress } from '../services/key';
 import favoritesImg from '../images/whiteHeartIcon.svg';
@@ -28,9 +29,6 @@ export default function DrinkDetails() {
     const storedValue = localStorage.getItem('inProgressRecipes');
     const keyInProgressObject = storedValue ? JSON.parse(storedValue) : keyInProgress;
     const keyDinamic = id;
-    // if (!keyInProgressObject.drinks) {
-    //   keyInProgressObject.drinks = {};
-    // }
     keyInProgressObject.drinks[keyDinamic] = { id };
     const newDrinks = { ...keyInProgressObject.drinks,
       [keyDinamic]: [] };
@@ -161,74 +159,100 @@ export default function DrinkDetails() {
   if (pathname === `/drinks/${id}` && dataApi.length !== 0) {
     return (
       <div>
-        <img
-          src={ dataObject.strDrinkThumb }
-          alt={ dataObject.strDrinkThumb }
-          data-testid="recipe-photo"
-          width="30%"
-        />
-        <div data-testid="recipe-title">
-          { dataObject.strDrink}
+        <div className="container-intial">
+          <img
+            src={ dataObject.strDrinkThumb }
+            alt={ dataObject.strDrinkThumb }
+            data-testid="recipe-photo"
+            className="img-detail"
+          />
+          <div data-testid="recipe-category" id="category-alcholic">
+            <div>{dataObject.strCategory}</div>
+            <div>{ dataObject.strAlcoholic}</div>
+          </div>
+          <div data-testid="recipe-title" className="name-detail">
+            { dataObject.strDrink}
+          </div>
+          <div className="btn-icons">
+            <div>
+              { isCopy
+                ? <p>Link copied!</p>
+                : (
+                  <button
+                    type="button"
+                    data-testid="share-btn"
+                    onClick={ handleShare }
+                    className="btn-detail"
+                  >
+                    <img
+                      src={ shareButton }
+                      alt="share"
+                    />
+                  </button>
+                )}
+            </div>
+            <button
+              type="button"
+              onClick={ favoriteBtn }
+              className="btn-detail"
+            >
+              <img
+                data-testid="favorite-btn"
+                src={ favoriteImage }
+                alt="favorites"
+                id="favorite-btn-detail"
+              />
+            </button>
+          </div>
         </div>
-        <div data-testid="recipe-category">
-          <div>{dataObject.strCategory}</div>
-          <div>{ dataObject.strAlcoholic}</div>
-        </div>
-        <div data-testid="instructions">
-          { dataObject.strInstructions }
-        </div>
-        <div>
+        <legend>Ingredients</legend>
+        <div className="ing-content">
           {
             ingMea.map((ing, i) => (
-              <li data-testid={ `${i}-ingredient-name-and-measure` } key={ i }>
+              <div data-testid={ `${i}-ingredient-name-and-measure` } key={ i }>
                 {Object.keys(ing)}
                 -
                 {Object.values(ing)}
-              </li>
+              </div>
             ))
           }
         </div>
-        <div data-testid="instructions">
+        <legend>Instruction</legend>
+        <div data-testid="instructions" className="instruction-details">
           { dataObject.strInstructions }
         </div>
-        <div>
+        <legend>Recomended</legend>
+        <div className="carrousel">
+          <Carousel itemsToShow={ 3 }>
+            { mealsRecom.map((meal) => (
+              <div key={ meal.strMealThumb }>
+                <Link to={ `/meals/${meal.idMeal}` }>
+                  <div className="carrousel-img-lgd">
+                    <img
+                      src={ meal.strMealThumb }
+                      alt="img-drink"
+                      width="100%"
+                      height="60%"
+                    />
+                    { meal.strMeal }
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+        <div id="content-btn-detail">
           <button
             type="button"
             data-testid="start-recipe-btn"
-            className="btn-start"
+            className="btn btn-success"
+            id="btn-start"
             onClick={ handleClick }
           >
             { buttonName }
           </button>
         </div>
-        <div>
-          <div>
-            { isCopy
-              ? <p>Link copied!</p>
-              : (
-                <button
-                  type="button"
-                  data-testid="share-btn"
-                  onClick={ handleShare }
-                >
-                  <img
-                    src={ shareButton }
-                    alt="share"
-                  />
-                </button>
-              )}
-          </div>
-          <button
-            type="button"
-            onClick={ favoriteBtn }
-          >
-            <img
-              data-testid="favorite-btn"
-              src={ favoriteImage }
-              alt="favorites"
-            />
-          </button>
-        </div>
+
       </div>
     );
   }
