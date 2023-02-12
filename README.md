@@ -11,3 +11,6 @@ Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua cr
 - quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
 - quais arquivos/pastas foram desenvolvidos pela Trybe.
 -->
+
+
+Utilize a resolução de tela de 360 x 640 (360 pixels de largura por 640 pixels de altura) enquanto a responsividade está sendo desenvolvida =).
